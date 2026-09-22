@@ -1,6 +1,8 @@
 package com.example.library_api.controller;
 
+import com.example.library_api.dto.UserResponseDTO;
 import com.example.library_api.entity.User;
+import com.example.library_api.mapper.UserMapper;
 import com.example.library_api.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -11,18 +13,22 @@ import java.util.List;
 @RequestMapping("/api")
 public class UserController {
     private UserService userService;
+    private UserMapper userMapper;
 
-    public UserController(UserService userService) {
+    public UserController(UserMapper userMapper, UserService userService) {
+        this.userMapper = userMapper;
         this.userService = userService;
     }
+
     @GetMapping("/users")
-    public List<User> getUsers() {
-        return userService.findAll();
+    public List<UserResponseDTO> getUsers() {
+        return userService.findAll().stream().map(userMapper::toDTO).toList();
 
     }
     @GetMapping("/users/{id}")
-    public User getUser(@PathVariable Integer id) {
-       return userService.findById(id);
+    public UserResponseDTO getUser(@PathVariable Integer id) {
+     User User = userService.findById(id);
+     return userMapper.toDTO(User);
     }
 
     @PostMapping("/users")
