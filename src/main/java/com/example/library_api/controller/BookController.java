@@ -3,6 +3,7 @@
 
 import com.example.library_api.dto.BookResponseDTO;
 import com.example.library_api.entity.Book;
+import com.example.library_api.enums.BookStatus;
 import com.example.library_api.mapper.BookMapper;
 import com.example.library_api.service.BookService;
 import jakarta.validation.Valid;
@@ -49,5 +50,10 @@ public class BookController {
     public List<BookResponseDTO> searchByTitle(@RequestParam String title) {
         return bookService.searchByTitle(title).stream().map(bookMapper::toDTO).toList();
     }
+    @GetMapping("/books/status")
+    public List<BookResponseDTO> searchByStatus(@RequestParam BookStatus status) {
+        return bookService.findBooksByStatus(status).stream().map(bookMapper::toDTO).toList();
+    }
+
 }
 

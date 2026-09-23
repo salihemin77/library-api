@@ -1,10 +1,12 @@
 package com.example.library_api.repository;
 
 import com.example.library_api.entity.Book;
+import com.example.library_api.enums.BookStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book,Integer> {
     List<Book> findByTitleContainingIgnoreCase(String title);
+    List<Book>   findByStatus(BookStatus status);
 }

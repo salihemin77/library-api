@@ -1,6 +1,7 @@
 package com.example.library_api.service;
 
 import com.example.library_api.entity.Book;
+import com.example.library_api.enums.BookStatus;
 import com.example.library_api.exception.BookNotFoundException;
 import com.example.library_api.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -38,5 +39,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> searchByTitle(String title) {
         return bookRepository.findByTitleContainingIgnoreCase(title);
+    }
+
+    @Override
+    public List<Book> findBooksByStatus(BookStatus status) {
+        return bookRepository.findByStatus(status);
     }
 }
