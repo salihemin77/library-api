@@ -34,4 +34,9 @@ public class BookServiceImpl implements BookService {
     public void deleteById(Integer id) {
         bookRepository.deleteById(id);
     }
+
+    @Override
+    public List<Book> searchByTitle(String title) {
+        return bookRepository.findByTitleContainingIgnoreCase(title);
+    }
 }

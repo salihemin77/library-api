@@ -22,16 +22,19 @@ public class Loan {
     private LocalDateTime loanDate;
     @Column(name = "return_date")
     private LocalDateTime returnDate;
+    @Column(name = "due_date")
+    private LocalDateTime dueDate;
     @Enumerated(EnumType.STRING)
     private LoanStatus status;
 
     public Loan() {
     }
 
-    public Loan(LocalDateTime loanDate, LocalDateTime returnDate, LoanStatus status) {
+    public Loan(LocalDateTime loanDate, LocalDateTime returnDate, LoanStatus status,LocalDateTime dueDate) {
 
         this.loanDate = loanDate;
         this.returnDate = returnDate;
+        this.dueDate = dueDate;
         this.status = status;
 
     }
@@ -85,6 +88,13 @@ public class Loan {
         this.user = user;
     }
 
+    public LocalDateTime getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDateTime dueDate) {
+        this.dueDate = dueDate;
+    }
 
     @Override
     public String toString() {
@@ -94,6 +104,7 @@ public class Loan {
                 ", user=" + user +
                 ", loanDate=" + loanDate +
                 ", returnDate=" + returnDate +
+                ", dueDate=" + dueDate +
                 ", status=" + status +
                 '}';
     }

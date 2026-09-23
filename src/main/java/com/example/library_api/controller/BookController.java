@@ -45,5 +45,9 @@ public class BookController {
     public void deleteBook(@PathVariable Integer id) {
         bookService.deleteById(id);
     }
+    @GetMapping("/books/search")
+    public List<BookResponseDTO> searchByTitle(@RequestParam String title) {
+        return bookService.searchByTitle(title).stream().map(bookMapper::toDTO).toList();
+    }
 }
 

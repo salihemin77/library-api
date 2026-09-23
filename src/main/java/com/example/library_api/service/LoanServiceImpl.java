@@ -11,7 +11,9 @@ import com.example.library_api.repository.LoanRepository;
 import com.example.library_api.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 @Service
@@ -52,13 +54,24 @@ public class LoanServiceImpl implements LoanService {
         User user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException());
         Book book = bookRepository.findById(bookId).orElseThrow(()->new BookNotFoundException());
 
+        long activeLoanCount = loanRepository.countByUserIdAndStatus(userId,LoanStatus.BORROWED);
+        if(activeLoanCount >=3){
+            throw  new MaximumLoanLimitException();
+        }
+
         if (book.getStatus() != BookStatus.AVAILABLE) {
              throw new BookAlreadyBorrowedException();
         }
         Loan loan = new Loan();
         loan.setUser(user);
         loan.setBook(book);
-        loan.setLoanDate(LocalDateTime.now());
+        LocalDateTime loanDate = LocalDateTime.now();
+       loan.setLoanDate(loanDate);
+        loan.setDueDate(loanDate.plusDays(14));
+
+
+
+
         loan.setStatus(LoanStatus.BORROWED);
         book.setStatus(BookStatus.BORROWED);
 
@@ -77,7 +90,14 @@ public class LoanServiceImpl implements LoanService {
         if (loan.getStatus() == LoanStatus.RETURNED) {
            throw new LoanAlreadyReturnedException();
         }
+
+        if(loan.getDueDate().isBefore(LocalDateTime.now())){
+            System.out.println("kitap geciti");
+        }
+
         loan.setReturnDate(LocalDateTime.now());
+
+
         loan.setStatus(LoanStatus.RETURNED);
         loan.getBook().setStatus(BookStatus.AVAILABLE);
 

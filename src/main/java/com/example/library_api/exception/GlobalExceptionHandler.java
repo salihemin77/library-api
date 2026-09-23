@@ -58,6 +58,14 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(MaximumLoanLimitException.class)
+    public ResponseEntity<Map<String, String>> handleMaximumLoanLimitException(MaximumLoanLimitException e) {
+        Map<String, String> map = new HashMap<>();
+        map.put("message", e.getMessage());
+        return new ResponseEntity<>(map, HttpStatus.CONFLICT);
+    }
+
+
 
 
 }

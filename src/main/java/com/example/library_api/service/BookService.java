@@ -9,4 +9,5 @@ public interface BookService {
     Book findById(Integer id);
     List<Book> findAll();
     void deleteById(Integer id);
+    List<Book> searchByTitle(String title);
 }
